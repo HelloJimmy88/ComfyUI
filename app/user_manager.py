@@ -189,11 +189,19 @@ class UserManager():
 
                 return rel_path
 
-            results = [
-                process_full_path(full_path)
+            matched_paths = [
+                full_path
                 for full_path in glob.glob(pattern, recursive=recurse)
                 if os.path.isfile(full_path)
             ]
+
+            if args.default_workflow:
+                default_abs = os.path.abspath(args.default_workflow)
+                matched_paths = [
+                    p for p in matched_paths if os.path.abspath(p) == default_abs
+                ]
+
+            results = [process_full_path(p) for p in matched_paths]
 
             return web.json_response(results)
 
