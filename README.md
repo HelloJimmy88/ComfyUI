@@ -291,6 +291,12 @@ For models compatible with Cambricon Extension for PyTorch (torch_mlu). Here's a
 
 ```python main.py```
 
+To open a workflow automatically when a client connects, launch ComfyUI with:
+
+```bash
+python main.py --default-workflow path/to/workflow.json
+```
+
 ### For AMD cards not officially supported by ROCm
 
 Try running it with this command if you have issues:

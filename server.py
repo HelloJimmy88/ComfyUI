@@ -207,6 +207,7 @@ class PromptServer():
             try:
                 # Send initial state to the new client
                 await self.send("status", { "status": self.get_queue_info(), 'sid': sid }, sid)
+                await self.send_default_workflow(sid)
                 # On reconnect if we are the currently executing client send the current node
                 if self.client_id == sid and self.last_node_id is not None:
                     await self.send("executing", { "node": self.last_node_id }, sid)
@@ -749,6 +750,16 @@ class PromptServer():
         self.app.add_routes([
             web.static('/', self.web_root),
         ])
+
+    async def send_default_workflow(self, sid):
+        if args.default_workflow is None:
+            return
+        try:
+            with open(args.default_workflow, "r", encoding="utf-8") as f:
+                workflow = json.load(f)
+            await self.send("loadWorkflow", workflow, sid)
+        except Exception as e:
+            logging.error(f"Failed to send default workflow: {e}")
 
     def get_queue_info(self):
         prompt_info = {}
