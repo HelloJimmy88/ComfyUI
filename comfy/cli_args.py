@@ -174,6 +174,13 @@ parser.add_argument(
     """,
 )
 
+parser.add_argument(
+    "--default-workflow",
+    type=str,
+    default=None,
+    help="Path to a workflow JSON file to load automatically when a client connects.",
+)
+
 def is_valid_directory(path: str) -> str:
     """Validate if the given path is a directory, and check permissions."""
     if not os.path.exists(path):
